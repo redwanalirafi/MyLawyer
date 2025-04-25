@@ -1,0 +1,441 @@
+{% extends 'base.html' %}
+{% block title %}Client Profile | {{ client.get_full_name|default:client.username }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-yellow: #f6cd58;
+        --primary-yellow-dark: #e5bc47;
+        --secondary-blue: #2c3e50;
+        --light-gray: #f8f9fa;
+    }
+    
+    .bg-yellow {
+        background-color: var(--primary-yellow);
+    }
+    
+    .btn-yellow {
+        background-color: var(--primary-yellow);
+        color: var(--secondary-blue);
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-yellow:hover {
+        background-color: var(--primary-yellow-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .profile-header {
+        background: linear-gradient(135deg, var(--secondary-blue), #34495e);
+        color: white;
+        border-radius: 0.5rem;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .card {
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .section-title {
+        position: relative;
+        padding-left: 15px;
+    }
+    
+    .section-title::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 5px;
+        background-color: var(--primary-yellow);
+        border-radius: 3px;
+    }
+    
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+    
+    .timeline-item {
+        position: relative;
+        padding-bottom: 1.5rem;
+    }
+    
+    .timeline-item:before {
+        content: "";
+        position: absolute;
+        left: -30px;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        background-color: #e9ecef;
+    }
+    
+    .timeline-item:after {
+        content: "";
+        position: absolute;
+        left: -38px;
+        top: 0;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background-color: var(--primary-yellow);
+        border: 3px solid white;
+        box-shadow: 0 0 0 1px #e9ecef;
+    }
+    
+    .timeline-item:last-child {
+        padding-bottom: 0;
+    }
+    
+    .timeline-item:last-child:before {
+        height: 0;
+    }
+    
+    .tab-pane {
+        padding: 20px 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+ 
+    <!-- Client Header -->
+    <div class="profile-header">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center">
+                    {% if profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" class="rounded-circle me-3" width="70" height="70" alt="Profile">
+                    {% else %}
+                    <div class="bg-white text-secondary rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 70px; height: 70px; font-size: 24px;">
+                        {{ client.get_full_name|default:client.username|first|upper }}
+                    </div>
+                    {% endif %}
+                    <div>
+                        <h1 class="fw-bold mb-0">{{ client.get_full_name|default:client.username }}</h1>
+                        <p class="mb-0">{{ client.email }}</p>
+                        <p class="mb-0 text-light-50">Client since {{ client.date_joined|date:"F d, Y" }}</p><br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a href="{% url 'chat_view' client.username %}" class="btn btn-secondary me-2">
+                    <i class="bi bi-chat-dots me-1"></i> Open Chat
+                </a>
+                <div class="dropdown d-inline-block">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="clientActions" data-bs-toggle="dropdown" aria-expanded="false">
+                        Actions
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="clientActions">
+                        <li><a class="dropdown-item" href="#scheduleConsultation" data-bs-toggle="modal">Schedule Consultation</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-success" href="#endRelationship" data-bs-toggle="modal">End Case</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs" id="clientProfileTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">Overview</button>
+        </li>
+    </ul>
+    
+    <!-- Tabs Content -->
+    <div class="tab-content" id="clientProfileTabsContent">
+        <!-- Overview Tab -->
+        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+            <div class="row">
+                <!-- Client Information -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-transparent border-0">
+                            <h4 class="fw-bold mb-0 section-title my-2">Client Information</h4><hr>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <p class="text-muted small mb-1">Full Name</p>
+                                <p class="fw-bold mb-0">{{ client.get_full_name|default:"Not provided" }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <p class="text-muted small mb-1">Email Address</p>
+                                <p class="fw-bold mb-0">{{ client.email }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <p class="text-muted small mb-1">Phone Number</p>
+                                <p class="fw-bold mb-0">{{ profile.phone_number|default:"Not provided" }}</p>
+                            </div>
+                            <div>
+                                <p class="text-muted small mb-1">Member Since</p>
+                                <p class="fw-bold mb-0">{{ client.date_joined|date:"F d, Y" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Current Case -->
+                <div class="col-lg-8 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-transparent border-0">
+                            <h4 class="fw-bold mb-0 section-title my-2">Initial Request</h4><hr>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <p class="text-muted small mb-1">Request Date</p>
+                                <p class="fw-bold mb-0">{{ hire_request.date_requested|date:"F d, Y" }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <p class="text-muted small mb-1">Request Message</p>
+                                <div class="p-3 bg-light rounded">
+                                    <p class="mb-0">{{ hire_request.message }}</p>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <p class="text-muted small mb-1">Status</p>
+                                <span class="badge bg-success">Active Client</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+               
+            </div>
+        </div>
+        
+        <!-- Case History Tab -->
+        <div class="tab-pane fade" id="case-history" role="tabpanel" aria-labelledby="case-history-tab">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">Case Timeline</h5>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h6 class="fw-bold mb-1">Initial Consultation</h6>
+                            <p class="small mb-1">Discussed client's legal needs and potential representation</p>
+                            <p class="text-muted small mb-0">{{ hire_request.date_requested|date:"M d, Y" }}</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h6 class="fw-bold mb-1">Accepted as Client</h6>
+                            <p class="small mb-1">Formally began attorney-client relationship</p>
+                            <p class="text-muted small mb-0">{{ hire_request.date_requested|date:"M d, Y" }}</p>
+                        </div>
+                        <!-- Add more timeline items as needed -->
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button class="btn btn-yellow" id="addTimelineEvent">
+                            <i class="bi bi-plus-circle me-1"></i> Add Timeline Event
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Communication Tab -->
+        <div class="tab-pane fade" id="communication" role="tabpanel" aria-labelledby="communication-tab">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0">Message History</h5>
+                        <a href="#" class="btn btn-yellow">
+                            <i class="bi bi-chat me-1"></i> Open Chat
+                        </a>
+                    </div>
+                    
+                    {% if message_history %}
+                        {% for message in message_history %}
+                        <div class="card mb-3 {% if message.sender == request.user %}bg-light{% else %}border{% endif %}">
+                            <div class="card-body p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <p class="fw-bold mb-0">
+                                        {% if message.sender == request.user %}
+                                        You
+                                        {% else %}
+                                        {{ client.get_full_name|default:client.username }}
+                                        {% endif %}
+                                    </p>
+                                    <p class="text-muted small mb-0">{{ message.sent_at|date:"M d, Y" }} at {{ message.sent_at|time:"g:i A" }}</p>
+                                </div>
+                                <p class="mb-0">{{ message.content }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <div class="mb-3">
+                                <i class="bi bi-chat-left-text display-4 text-muted"></i>
+                            </div>
+                            <p class="text-muted mb-3">No messages exchanged yet</p>
+                            <a href="#" class="btn btn-yellow">
+                                <i class="bi bi-chat me-1"></i> Start Conversation
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Documents Tab -->
+        <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0">Shared Documents</h5>
+                        <button class="btn btn-yellow" data-bs-toggle="modal" data-bs-target="#shareDocument">
+                            <i class="bi bi-cloud-upload me-1"></i> Share Document
+                        </button>
+                    </div>
+                    
+                    <div class="text-center py-5">
+                        <div class="mb-3">
+                            <i class="bi bi-file-earmark-text display-4 text-muted"></i>
+                        </div>
+                        <p class="text-muted mb-3">No documents have been shared yet</p>
+                        <button class="btn btn-yellow" data-bs-toggle="modal" data-bs-target="#shareDocument">
+                            <i class="bi bi-cloud-upload me-1"></i> Share First Document
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Notes Tab -->
+        <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0">Client Notes</h5>
+                        <button class="btn btn-yellow" id="addNote">
+                            <i class="bi bi-journal-plus me-1"></i> Add Note
+                        </button>
+                    </div>
+                    
+                    <textarea class="form-control mb-3" id="clientNotes" rows="10" placeholder="Add your private notes about this client here..."></textarea>
+                    
+                    <div class="text-end">
+                        <button class="btn btn-yellow" id="saveNotes">
+                            <i class="bi bi-save me-1"></i> Save Notes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Schedule Consultation Modal -->
+<div class="modal fade" id="scheduleConsultation" tabindex="-1" aria-labelledby="scheduleConsultationLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="scheduleConsultationLabel">Schedule Consultation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="consultationTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="consultationTitle" placeholder="Consultation Title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="consultationDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="consultationDate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="consultationTime" class="form-label">Time</label>
+                        <input type="time" class="form-control" id="consultationTime">
+                    </div>
+                    <div class="mb-3">
+                        <label for="consultationDuration" class="form-label">Duration</label>
+                        <select class="form-select" id="consultationDuration">
+                            <option value="30">30 minutes</option>
+                            <option value="60" selected>1 hour</option>
+                            <option value="90">1.5 hours</option>
+                            <option value="120">2 hours</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="consultationNotes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="consultationNotes" rows="3" placeholder="Add any notes about this consultation"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-yellow">Schedule & Notify Client</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Share Document Modal -->
+<div class="modal fade" id="shareDocument" tabindex="-1" aria-labelledby="shareDocumentLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="shareDocumentLabel">Share Document</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="documentTitle" class="form-label">Document Title</label>
+                        <input type="text" class="form-control" id="documentTitle" placeholder="Document Title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="documentFile" class="form-label">Upload File</label>
+                        <input type="file" class="form-control" id="documentFile">
+                    </div>
+                    <div class="mb-3">
+                        <label for="documentDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="documentDescription" rows="3" placeholder="Add a description of this document"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-yellow">Upload & Share</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- End Relationship Modal -->
+<div class="modal fade" id="endRelationship" tabindex="-1" aria-labelledby="endRelationshipLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="endRelationshipLabel">End Client Relationship</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{% url 'end_relationship' client.id %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Are you sure you want to complete your consultation with {{ client.get_full_name|default:client.username }}? This action cannot be undone.
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Mark As Complete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

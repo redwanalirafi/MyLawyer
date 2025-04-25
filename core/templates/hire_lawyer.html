@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}Hire {{ lawyer.user.get_full_name|default:lawyer.user.username }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4">
+                    <!-- Back button -->
+                    <a href="{% url 'view_lawyers' %}" class="btn btn-sm btn-outline-secondary mb-4">
+                        <i class="fas fa-arrow-left"></i> Back to lawyers
+                    </a>
+
+                    <div class="row">
+                        <!-- Lawyer Profile Section -->
+                        <div class="col-md-4 text-center border-end">
+                            <div class="profile-image-container mb-3"
+                                style="width: 150px; height: 150px; margin: 0 auto; border: 4px solid #f6cd58; border-radius: 50%; overflow: hidden;">
+                                {% if lawyer.profile_picture %}
+                                <img src="{{ lawyer.profile_picture.url }}" class="img-fluid"
+                                    style="object-fit: cover; width: 100%; height: 100%;">
+                                {% else %}
+                                <img src="https://via.placeholder.com/150x150.png?text=No+Image" class="img-fluid"
+                                    style="object-fit: cover; width: 100%; height: 100%;">
+                                {% endif %}
+                            </div>
+                            <h4 class="fw-bold text-primary">{{ lawyer.user.get_full_name|default:lawyer.user.username}}
+                            </h4>
+                            <p class="badge" style="background-color: #f6cd58;">{{ lawyer.specialization }}</p>
+                            <p class="text-muted">{{ lawyer.experience_years }}
+                                year{{lawyer.experience_years|pluralize}} of experience</p>
+
+                            {% if lawyer.available %}
+                            <span class="badge" style="background-color: #28a745;">Available</span>
+                            {% else %}
+                            <span class="badge bg-secondary">Unavailable</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Hire Form Section -->
+                        <div class="col-md-8">
+                            <h3 class="mb-4">Submit a Hire Request</h3>
+
+                            <form method="post">
+                                {% csrf_token %}
+
+                                {% if messages %}
+                                {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+
+                                <div class="mb-3">
+                                    <h5>About {{ lawyer.user.get_full_name|default:"the lawyer" }}</h5>
+                                    <p>{{ lawyer.bio }}</p>
+                                </div>
+
+                                <div class="mb-4">
+                                    {{ form.message.label_tag }}
+                                    {{ form.message }}
+                                    {% if form.message.errors %}
+                                    <div class="text-danger">
+                                        {{ form.message.errors }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="d-grid">
+                                    <button type="submit" class="btn text-white"
+                                        style="background-color: #f6cd58; padding: 12px;">
+                                        Send Request
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card my-4 shadow border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h5 class="card-title">What happens next?</h5>
+                    <ol class="mb-0">
+                        <li class="mb-2">Your request will be sent to
+                            <strong>{{lawyer.user.get_full_name|default:"thelawyer"}}</strong>
+                            for review.</li>
+                        <li class="mb-2">You'll receive a notification when they accept or decline your request.</li>
+                        <li class="mb-2">If accepted, contact details will be shared for further communication.</li>
+                        <li>You can view the status of all your requests in "My Requests" section.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

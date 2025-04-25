@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f5f7fa;
+    }
+
+    .chat-container {
+        max-width: 700px;
+        margin: 30px auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 70vh;
+    }
+
+    .chat-header {
+        background: #fad56d;
+        color: white;
+        padding: 16px 20px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    #chat-box {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .message {
+        max-width: 70%;
+        padding: 10px 14px;
+        border-radius: 18px;
+        font-size: 15px;
+        line-height: 1.4;
+        position: relative;
+    }
+
+    .message.you {
+        background-color: #e1f0ff;
+        align-self: flex-end;
+        border-bottom-right-radius: 4px;
+    }
+
+    .message.them {
+        background-color: #f0f0f0;
+        align-self: flex-start;
+        border-bottom-left-radius: 4px;
+    }
+
+    .timestamp {
+        font-size: 11px;
+        color: #999;
+        margin-top: 4px;
+    }
+
+    .chat-input {
+        display: flex;
+        padding: 16px 20px;
+        border-top: 1px solid #eee;
+        background: #fafafa;
+    }
+
+    .chat-input input[type="text"] {
+        flex: 1;
+        padding: 12px 14px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        font-size: 14px;
+        outline: none;
+    }
+
+    .chat-input button {
+        background: #4a90e2;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        margin-left: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s ease-in-out;
+    }
+
+    .chat-input button:hover {
+        background: #407acc;
+    }
+</style>
+
+<div class="chat-container">
+    <div class="chat-header">
+        Chat with {{ other_user.username }}
+    </div>
+
+    <div id="chat-box">
+        {% for msg in messages %}
+            <div class="message {% if msg.sender == request.user %}you{% else %}them{% endif %}">
+                {{ msg.content }}
+                <div class="timestamp">{{ msg.sent_at|time }}</div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <form id="chat-form" class="chat-input" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="recipient_id" value="{{ other_user.id }}">
+        <input type="text" name="content" id="message-input" placeholder="Type a message..." autocomplete="off">
+        <button type="submit">Send</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$('#chat-form').on('submit', function(e) {
+    e.preventDefault();
+    let messageText = $('#message-input').val().trim();
+    if (!messageText) return;
+
+    $.ajax({
+        url: '{% url "send_message" %}',
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function(data) {
+            if (data.status === 'ok') {
+                $('#chat-box').append(`
+                    <div class="message you">
+                        ${data.message}
+                        <div class="timestamp">${data.timestamp}</div>
+                    </div>
+                `);
+                $('#message-input').val('');
+                $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

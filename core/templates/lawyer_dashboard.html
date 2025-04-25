@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}Lawyer Dashboard{% endblock %}
+
+{% block content %}
+<div class="container my-5 px-5">
+    <h2 class="mb-4 fw-bold">Welcome, {{ request.user.get_full_name|default:request.user.username }}</h2>
+
+    {% if messages %}
+    <div class="row">
+        <div class="col-12">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Pending Requests -->
+    <div class="mb-5">
+        <h4 class="fw-bold mb-3">Pending Hire Requests</h4>
+        <div class="row">
+            {% for request in pending_requests %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow border-0 rounded-4">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-1">{{ request.student.get_full_name|default:request.student.username }}</h5>
+                        <p class="text-muted small">Requested on {{ request.date_requested|date:"M d, Y" }}</p>
+                        <p class="text-muted small">{{ request.message|truncatechars:150 }}</p>
+                        <div class="d-flex gap-2 mt-3">
+                            <a href="{% url 'accept_request' request.id %}" class="btn btn-success w-50">Accept</a>
+                            <a href="{% url 'reject_request' request.id %}" class="btn btn-outline-danger w-50">Reject</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">No pending requests.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Accepted Conversations -->
+    <div>
+        <h4 class="fw-bold mb-3">Your Clients</h4>
+        <p class="text-muted mb-4">Below are students whose requests you’ve accepted. You can start a conversation or view their profile for more details.</p>
+        
+        <div class="row">
+            {% for convo in conversations %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card border-0 shadow-lg rounded-4 h-100 hover-shadow" style="transition: transform 0.2s ease;">
+                    <div class="card-body p-4">
+                        <!-- User Avatar and Info -->
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <img src="https://ui-avatars.com/api/?name={{ convo.student.get_full_name|default:convo.student.username }}&background=f6cd58&color=fff&size=64" class="rounded-circle" width="64" height="64" alt="Avatar">
+                            </div>
+                            <div class="ms-3">
+                                <h5 class="fw-bold mb-1">{{ convo.student.get_full_name|default:convo.student.username }}</h5>
+                                <p class="text-muted mb-0 small"><i class="bi bi-envelope-fill me-1"></i>Unread messages: {{ convo.unread_count }}</p>
+                            </div>
+                        </div>
+    
+                        <!-- Friendly Text -->
+                        <p class="small text-muted mb-4">
+                            Stay connected with your client to offer better legal support. 
+                            You can continue your discussion or check their request details.
+                        </p>
+    
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'chat_view' convo.student.username %}" class="btn w-50 text-white fw-semibold" style="background-color: #f6cd58;">
+                                <i class="bi bi-chat-dots me-1"></i>Chat Now
+                            </a>
+                            <a href="{% url 'client_profile' convo.student.id %}" class="btn btn-outline-secondary w-50 fw-semibold">
+                                <i class="bi bi-person-lines-fill me-1"></i>View Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center text-muted py-5">
+                <i class="bi bi-person-x fs-1"></i>
+                <p class="mt-3">You don’t have any accepted clients yet. Once you accept a request, clients will appear here for easy access.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

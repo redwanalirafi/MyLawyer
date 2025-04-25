@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block title %}MyLawyer - Your Legal Guide{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+{% load static %}
+<div class="container-fluid p-0">
+    <div class="position-relative">
+        <img src="{% static 'home.jpg' %}" class="img-fluid w-100" alt="Law library background"
+            style="max-height: 600px; object-fit: cover;">
+        <div class="position-absolute top-50 start-50 translate-middle text-center">
+            <div class="bg-warning px-4 py-2 d-inline-block mb-2">
+                <h1 class="display-4 fw-bold text-dark m-0">MyLawyer</h1>
+            </div>
+            <p class="text-white fs-5 fw-light">"Your Legal Guide, Anytime, Anywhere!"</p>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <p class="lead text-secondary">
+                MyLawyer is here to change the way you access legal services. We provide fast, expert legal advice
+                right when you need it, all through a digital platform designed with you in mind. Whether you're
+                looking for answers to a legal question, need help with a contract, or require expert consultation, we
+                make the process simple and stress-free. With MyLawyer, there's no need for expensive consultations
+                or time-consuming appointments. Get professional legal insights with just a few clicks—whenever
+                and wherever you are.
+            </p>
+
+            <div class="mt-5">
+                <a href="#" class="btn btn-warning btn-lg px-5 py-3 fw-bold">GET STARTED</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container my-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="rounded-circle bg-warning p-3 d-inline-flex mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-clock" viewBox="0 0 16 16">
+                            <path
+                                d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title h4">24/7 Availability</h3>
+                    <p class="card-text">Access legal assistance whenever you need it, day or night.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="rounded-circle bg-warning p-3 d-inline-flex mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-cash" viewBox="0 0 16 16">
+                            <path d="M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+                            <path
+                                d="M0 4a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V6a2 2 0 0 1-2-2H3z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title h4">Affordable Pricing</h3>
+                    <p class="card-text">Transparent fees with no hidden costs or expensive retainers.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="rounded-circle bg-warning p-3 d-inline-flex mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-person-check" viewBox="0 0 16 16">
+                            <path
+                                d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+                            <path
+                                d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title h4">Expert Attorneys</h3>
+                    <p class="card-text">Connect with qualified legal professionals with expertise in various fields.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Testimonials Section -->
+<div class="container my-5 py-5 bg-light">
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8 text-center">
+            <h2 class="display-6 fw-bold">What Our Clients Say</h2>
+            <p class="lead">Real experiences from people who have used our services</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-0">
+                <div class="card-body p-4">
+                    <div class="d-flex mb-3">
+                        <span class="text-warning me-1">★</span>
+                        <span class="text-warning me-1">★</span>
+                        <span class="text-warning me-1">★</span>
+                        <span class="text-warning me-1">★</span>
+                        <span class="text-warning">★</span>
+                    </div>
+                    <p class="card-text">"MyLawyer saved me hours of research and thousands in legal fees. Their team
+                        provided exactly what I needed for my business contract."</p>
+                    <p class="fw-bold mb-0">- Michael T., Small Business Owner</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-0">
+                <div class="card-body p-4">
+                    <div class="d-flex mb-3">
+                        <span class="text-warning me-1">★</span>
+                        <span class="text-warning me-1">★</span>
+                        <span class="text-warning me-1">★</span>
+                        <span class="text-warning me-1">★</span>
+                        <span class="text-warning">★</span>
+                    </div>
+                    <p class="card-text">"I was in a panic about a legal issue late at night. MyLawyer connected me with
+                        an attorney within minutes who calmed my fears and guided me through the process."</p>
+                    <p class="fw-bold mb-0">- Sarah L., Homeowner</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-0">
+                <div class="card-body p-4">
+                    <div class="d-flex mb-3">
+                        <span class="text-warning me-1">★</span>
+                        <span class="text-warning me-1">★</span>
+                        <span class="text-warning me-1">★</span>
+                        <span class="text-warning me-1">★</span>
+                        <span class="text-warning">★</span>
+                    </div>
+                    <p class="card-text">"As someone who travels frequently, having legal advice accessible from
+                        anywhere has been a game-changer. Professional, prompt, and precise service."</p>
+                    <p class="fw-bold mb-0">- James R., Consultant</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="container-fluid py-5" style="background-color: #f6cd58;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mb-4 mb-lg-0">
+                <h2 class="fw-bold">Ready to get started with MyLawyer?</h2>
+                <p class="lead mb-0">Sign up today and experience legal services reimagined.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a href="{% url 'register' %}" class="btn btn-dark btn-lg px-4 py-3">SIGN UP NOW</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

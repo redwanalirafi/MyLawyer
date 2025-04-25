@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+  <!-- Background rectangle -->
+  <rect width="200" height="120" fill="#f6cd58" rx="5" ry="5"/>
+  
+  <!-- Hexagon icon -->
+  <g transform="translate(100, 35) scale(1.5)">
+    <path d="M0,-20 L17.32,-10 L17.32,10 L0,20 L-17.32,10 L-17.32,-10 Z" 
+          fill="none" 
+          stroke="#2c5e54" 
+          stroke-width="3"/>
+    <circle cx="0" cy="0" r="8" fill="#2c5e54"/>
+  </g>
+  
+  <!-- Text placed below the hexagon -->
+  <text x="100" y="90" 
+        font-family="Arial, sans-serif" 
+        font-size="28" 
+        font-weight="bold" 
+        text-anchor="middle" 
+        fill="#2c5e54">
+    MyLawyer
+  </text>
+</svg>
