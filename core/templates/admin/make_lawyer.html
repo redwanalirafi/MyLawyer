@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h1>Make Lawyer</h1>
+            <p class="text-muted">Assign lawyer role to {{ user.username }}</p>
+        </div>
+        <div class="col-md-6 text-end">
+            <a href="{% url 'admin_user_detail' user.id %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back to User
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Lawyer Information</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                    {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <div class="mb-3">
+                    <label for="{{ form.profile_picture.id_for_label }}" class="form-label">Profile Picture</label>
+                    {{ form.profile_picture }}
+                    {% if form.profile_picture.errors %}
+                    <div class="text-danger">
+                        {% for error in form.profile_picture.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="{{ form.specialization.id_for_label }}" class="form-label">Specialization</label>
+                    {{ form.specialization }}
+                    {% if form.specialization.errors %}
+                    <div class="text-danger">
+                        {% for error in form.specialization.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="{{ form.experience_years.id_for_label }}" class="form-label">Years of Experience</label>
+                    {{ form.experience_years }}
+                    {% if form.experience_years.errors %}
+                    <div class="text-danger">
+                        {% for error in form.experience_years.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-3">
+                    <label for="{{ form.bio.id_for_label }}" class="form-label">Biography</label>
+                    {{ form.bio }}
+                    {% if form.bio.errors %}
+                    <div class="text-danger">
+                        {% for error in form.bio.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-check mb-3">
+                    {{ form.available }}
+                    <label class="form-check-label" for="{{ form.available.id_for_label }}">
+                        Available for Hire
+                    </label>
+                    {% if form.available.errors %}
+                    <div class="text-danger">
+                        {% for error in form.available.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success">Make Lawyer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

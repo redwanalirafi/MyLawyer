@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h1>User Details</h1>
+            <p class="text-muted">Manage user information and roles</p>
+        </div>
+        <div class="col-md-6 text-end">
+            <a href="{% url 'admin_user_list' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Users
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">User Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        {% if profile and profile.profile_picture %}
+                            <img src="{{ profile.profile_picture.url }}" alt="{{ user.username }}" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                        {% elif lawyer_profile and lawyer_profile.profile_picture %}
+                            <img src="{{ lawyer_profile.profile_picture.url }}" alt="{{ user.username }}" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                        {% else %}
+                            <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 150px; height: 150px;">
+                                <span class="display-4 text-white">{{ user.username|slice:":1"|upper }}</span>
+                            </div>
+                        {% endif %}
+                        <h4>{{ user.get_full_name|default:user.username }}</h4>
+                        <p class="text-muted">{{ user.email }}</p>
+                        
+                        {% if user.groups.all %}
+                            {% for group in user.groups.all %}
+                                <span class="badge bg-primary">{{ group.name }}</span>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        {% if lawyer_profile %}
+                            <span class="badge bg-success">Lawyer</span>
+                        {% endif %}
+                        
+                        {% if user.is_active %}
+                            <span class="badge bg-success">Active</span>
+                        {% else %}
+                            <span class="badge bg-danger">Inactive</span>
+                        {% endif %}
+                        
+                        {% if profile and profile.is_active %}
+                            <span class="badge bg-info">Verified</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="list-group mb-3">
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Username</h6>
+                                <small>{{ user.username }}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Email</h6>
+                                <small>{{ user.email }}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">First Name</h6>
+                                <small>{{ user.first_name|default:"-" }}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Last Name</h6>
+                                <small>{{ user.last_name|default:"-" }}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Date Joined</h6>
+                                <small>{{ user.date_joined|date:"F j, Y" }}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">Last Login</h6>
+                                <small>{{ user.last_login|date:"F j, Y H:i"|default:"Never" }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'admin_edit_user' user.id %}" class="btn btn-primary">Edit User</a>
+                        <a href="{% url 'admin_toggle_user_status' user.id %}" class="btn btn-warning">
+                            {% if profile and profile.is_active %}
+                                Deactivate Account
+                            {% else %}
+                                Activate Account
+                            {% endif %}
+                        </a>
+                        <a href="{% url 'admin_delete_user' user.id %}" class="btn btn-danger">Delete User</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Role Management</h5>
+                </div>
+                <div class="card-body">
+                    {% if lawyer_profile %}
+                        <div class="alert alert-info">
+                            <h5 class="alert-heading">Lawyer Information</h5>
+                            <p><strong>Specialization:</strong> {{ lawyer_profile.specialization }}</p>
+                            <p><strong>Experience:</strong> {{ lawyer_profile.experience_years }} years</p>
+                            <p><strong>Status:</strong> 
+                                {% if lawyer_profile.available %}
+                                    <span class="badge bg-success">Available</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Not Available</span>
+                                {% endif %}
+                            </p>
+                            <p><strong>Bio:</strong> {{ lawyer_profile.bio }}</p>
+                            <hr>
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'admin_remove_lawyer' user.id %}" class="btn btn-danger">Remove Lawyer Role</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-secondary">
+                            <h5 class="alert-heading">Make this user a lawyer</h5>
+                            <p>This user is not currently a lawyer. You can assign them the lawyer role to allow them to provide legal services.</p>
+                            <hr>
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'admin_make_lawyer' user.id %}" class="btn btn-success">Make Lawyer</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {% if hire_requests %}
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Hire Requests</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Lawyer</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in hire_requests %}
+                                <tr>
+                                    <td>{{ request.lawyer.user.get_full_name|default:request.lawyer.user.username }}</td>
+                                    <td>{{ request.date_requested|date:"F j, Y" }}</td>
+                                    <td>
+                                        {% if request.status == 'pending' %}
+                                            <span class="badge bg-warning">Pending</span>
+                                        {% elif request.status == 'accepted' %}
+                                            <span class="badge bg-success">Accepted</span>
+                                        {% elif request.status == 'rejected' %}
+                                            <span class="badge bg-danger">Rejected</span>
+                                        {% elif request.status == 'completed' %}
+                                            <span class="badge bg-info">Completed</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if client_relationships %}
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Client Relationships (As Client)</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Lawyer</th>
+                                    <th>Start Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for rel in client_relationships %}
+                                <tr>
+                                    <td>{{ rel.lawyer.get_full_name|default:rel.lawyer.username }}</td>
+                                    <td>{{ rel.start_date|date:"F j, Y" }}</td>
+                                    <td>
+                                        {% if rel.status == 'active' %}
+                                            <span class="badge bg-success">Active</span>
+                                        {% elif rel.status == 'completed' %}
+                                            <span class="badge bg-info">Completed</span>
+                                        {% elif rel.status == 'terminated' %}
+                                            <span class="badge bg-danger">Terminated</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if lawyer_relationships %}
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Client Relationships (As Lawyer)</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Start Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for rel in lawyer_relationships %}
+                                <tr>
+                                    <td>{{ rel.client.get_full_name|default:rel.client.username }}</td>
+                                    <td>{{ rel.start_date|date:"F j, Y" }}</td>
+                                    <td>
+                                        {% if rel.status == 'active' %}
+                                            <span class="badge bg-success">Active</span>
+                                        {% elif rel.status == 'completed' %}
+                                            <span class="badge bg-info">Completed</span>
+                                        {% elif rel.status == 'terminated' %}
+                                            <span class="badge bg-danger">Terminated</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -145,6 +145,10 @@
                     </ul>
                 </div>
             </div>
+            <div class="col-md-12 text-md-end mt-3 mt-md-0"><a href="{% url 'generate_report' client.id %}" class="btn btn-secondary">
+                <i class="bi bi-chat me-1"></i> Legal Consultation Report
+            </a></div>
+            
         </div>
     </div>
     
@@ -253,6 +257,7 @@
                         <a href="#" class="btn btn-yellow">
                             <i class="bi bi-chat me-1"></i> Open Chat
                         </a>
+                        
                     </div>
                     
                     {% if message_history %}

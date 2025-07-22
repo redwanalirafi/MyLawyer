@@ -67,3 +67,16 @@ class ClientRelationship(models.Model):
 
     def __str__(self):
         return f"Relationship between {self.lawyer.username} and {self.client.username}"
+    
+class Report(models.Model):
+    lawyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reports_created')
+    client = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reports_received')
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    # Optional links for better traceability
+    relationship = models.ForeignKey(ClientRelationship, on_delete=models.SET_NULL, null=True, blank=True)
+    hire_request = models.ForeignKey(HireRequest, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return f"Report by {self.lawyer.username} for {self.client.username} on {self.created_at.strftime('%Y-%m-%d')}"

@@ -55,7 +55,7 @@
                     </div>
                     
                     {% if request.status == 'accepted' %}
-                    <a href="#" class="btn w-100 text-white" style="background-color: #f6cd58;">
+                    <a href="{% url 'chat_view' request.lawyer.user.username %}" class="btn w-100 text-white" style="background-color: #f6cd58;">
                         Contact Lawyer
                     </a>
                     {% elif request.status == 'pending' %}
