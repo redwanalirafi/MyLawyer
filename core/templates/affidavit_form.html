@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}Generate Affidavit{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 fw-bold">Generate Student Affidavit</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        {% if forloop.first %}
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Your Full Name</label>
+                {{ form.full_name }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Parent’s Name</label>
+                {{ form.parent_name }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Full Address</label>
+            {{ form.address }}
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Institution Name</label>
+                {{ form.institution }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Program Name</label>
+                {{ form.program }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Year/Semester</label>
+                {{ form.semester }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Date of Birth</label>
+                {{ form.dob }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Student ID</label>
+                {{ form.student_id }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Contact (Mobile/Email)</label>
+                {{ form.contact }}
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">City</label>
+                {{ form.current_city }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Country</label>
+                {{ form.country }}
+            </div>
+        </div>
+
+        <button type="submit" class="btn text-white" style="background-color: #f6cd58;">Generate PDF</button>
+        <a href="{% url 'lawyer_dashboard' %}" class="btn btn-outline-secondary ms-2">Cancel</a>
+    </form>
+</div>
+<br><br>
+{% endblock %}

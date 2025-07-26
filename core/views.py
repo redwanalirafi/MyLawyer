@@ -1,5 +1,7 @@
-from datetime import timezone
+from datetime import date, timezone
+import io
 import json
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.models import User,  Group
 from django.contrib.auth import authenticate, login, logout
@@ -760,3 +762,40 @@ def relationship_list(request):
         'status_filter': status_filter,
         'status_choices': ClientRelationship.status_choices
     })
+
+@login_required
+def affidavit_view(request):
+    if request.method == 'POST':
+        form = AffidavitForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            data['today'] = date.today().strftime('%d/%m/%Y')
+            html = render_to_string('affidavit_template.html', {'data': data})
+            
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="affidavit.pdf"'
+
+            pisa_status = pisa.CreatePDF(io.StringIO(html), dest=response)
+            if pisa_status.err:
+                return HttpResponse('Error generating PDF: %s' % pisa_status.err)
+            return response
+    else:
+        form = AffidavitForm()
+    return render(request, 'affidavit_form.html', {'form': form})
+
+def about(request):
+    return render(request, "about.html")
+
+def contact(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        ContactMessage.objects.create(name=name, email=email, message=message)
+        messages.success(request, "Thank you! We received your message.")
+    return render(request, 'contact.html')
+
+
+def test(request):
+    import core.tests as t
+    t.create_dummy_data()

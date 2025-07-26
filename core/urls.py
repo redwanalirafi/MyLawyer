@@ -11,6 +11,8 @@ urlpatterns = [
     # path('complete_signup/',views.complete_profile,name="complete_profile"),
     path('logout/',views.user_logout,name="logout"),
     path('dashboard/',views.dashboard,name="dashboard"),
+    path('about/',views.about,name="about"),
+    path('contact/',views.contact,name="contact"),
 
     path('lawyers/',views.view_lawyers,name="view_lawyers"),
     path('hire_lawyer/<int:lawyer_id>/', views.hire_lawyer, name="hire_lawyer"),
@@ -52,5 +54,8 @@ urlpatterns = [
     # Relationship Management
     path('admin-panel/relationships/', views.relationship_list, name='admin_relationship_list'),
 
+    path('doc_generator/', views.affidavit_view, name='doc_generator'),
+
+    path('test/', views.test, name='aaa'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            margin: 1.25in;
+        }
+        body {
+            font-family: "Georgia", serif;
+            font-size: 12pt;
+            line-height: 1.6;
+            color: #000;
+        }
+        h2 {
+            text-align: center;
+            font-size: 18pt;
+            text-transform: uppercase;
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+            margin-bottom: 30px;
+        }
+        p {
+            text-align: justify;
+        }
+        .signature {
+            margin-top: 50px;
+            text-align: left;
+        }
+        .signature strong {
+            display: inline-block;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Affidavit by Student</h2>
+
+    <p>I, <strong>{{ data.full_name }}</strong>,<br>
+    Son/Daughter of <strong>{{ data.parent_name }}</strong>,<br>
+    residing at <strong>{{ data.address }}</strong>,<br>
+    do hereby solemnly affirm and declare as follows:</p>
+
+    <p>1. That I am a bonafide student of <strong>{{ data.institution }}</strong>, currently enrolled in the
+    <strong>{{ data.program }}</strong> in <strong>{{ data.semester }}</strong>.</p>
+
+    <p>2. That my date of birth is <strong>{{ data.dob }}</strong>, and my student ID is <strong>{{ data.student_id }}</strong>.</p>
+
+    <p>3. That I am currently residing at the above-mentioned address for the purpose of my studies.</p>
+
+    <p>4. That this affidavit is made to declare that all the above information is true and correct to the best of my knowledge and belief.</p>
+
+    <p>5. That I understand any false information may lead to legal consequences.</p>
+
+    <p>Verified and signed this <strong>{{ data.today }}</strong> at <strong>{{ data.current_city }}, {{ data.country }}</strong>.</p>
+
+    <div class="signature">
+        <p>__________________________<br>
+        Signature of the Student<br>
+        <strong>{{ data.full_name }}</strong><br>
+        {{ data.contact }}</p>
+    </div>
+</body>
+</html>

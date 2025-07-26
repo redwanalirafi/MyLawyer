@@ -4,108 +4,127 @@ from django.test import TestCase
 
 # for adding dummy data
 from django.contrib.auth.models import User
-from models import *
+from .models import *
 from django.utils import timezone
 import random
 
 # Create Users (mix of students and lawyers)
 def create_dummy_data():
-    # Create student users
-    student_users = [
-        {'username': 'student1', 'email': 'student1@university.edu', 'first_name': 'Alex', 'last_name': 'Johnson', 'password': 'student123'},
-        {'username': 'student2', 'email': 'student2@university.edu', 'first_name': 'Taylor', 'last_name': 'Smith', 'password': 'student123'},
-        {'username': 'student3', 'email': 'student3@university.edu', 'first_name': 'Jordan', 'last_name': 'Williams', 'password': 'student123'},
-        {'username': 'student4', 'email': 'student4@university.edu', 'first_name': 'Casey', 'last_name': 'Brown', 'password': 'student123'},
-        {'username': 'student5', 'email': 'student5@university.edu', 'first_name': 'Morgan', 'last_name': 'Davis', 'password': 'student123'},
-    ]
-    
-    student_objects = []
-    for student_data in student_users:
-        user = User.objects.create_user(
-            username=student_data['username'],
-            email=student_data['email'],
-            password=student_data['password']
-        )
-        user.first_name = student_data['first_name']
-        user.last_name = student_data['last_name']
-        user.save()
-        
-        # Create profile for student
-        profile = Profile.objects.create(
-            user=user,
-            is_active=True
-        )
-        student_objects.append(user)
-    
+
     # Create lawyer users
     lawyer_data = [
         {
-            'username': 'lawyer1', 
-            'email': 'lawyer1@legalfirm.com', 
-            'first_name': 'James', 
-            'last_name': 'Wilson',
+            'username': 'ahossain',
+            'email': 'arif.hossain@lawfirm.bd',
+            'first_name': 'Arif',
+            'last_name': 'Hossain',
             'password': 'lawyer123',
-            'specialization': 'Academic Misconduct',
+            'specialization': 'Corporate Law',
+            'experience_years': 10,
+            'bio': 'Expert in company law, contracts, and business compliance across Bangladesh.',
+            'available': True
+        },
+        {
+            'username': 'fkhan',
+            'email': 'fatema.khan@lawfirm.bd',
+            'first_name': 'Fatema',
+            'last_name': 'Khan',
+            'password': 'lawyer123',
+            'specialization': 'Family Law',
             'experience_years': 8,
-            'bio': 'Specialized in helping students navigate academic integrity issues and university disciplinary proceedings.',
+            'bio': 'Providing compassionate legal support for family disputes, divorce, and inheritance matters.',
             'available': True
         },
         {
-            'username': 'lawyer2', 
-            'email': 'lawyer2@legalfirm.com', 
-            'first_name': 'Emily', 
-            'last_name': 'Rodriguez',
+            'username': 'srahman',
+            'email': 'shafiq.rahman@lawfirm.bd',
+            'first_name': 'Shafiq',
+            'last_name': 'Rahman',
             'password': 'lawyer123',
-            'specialization': 'Housing Law',
-            'experience_years': 5,
-            'bio': 'Expert in landlord-tenant disputes, lease reviews, and housing discrimination cases for students.',
-            'available': True
-        },
-        {
-            'username': 'lawyer3', 
-            'email': 'lawyer3@legalfirm.com', 
-            'first_name': 'Michael', 
-            'last_name': 'Lee',
-            'password': 'lawyer123',
-            'specialization': 'Student Visa Issues',
+            'specialization': 'Labor Law',
             'experience_years': 12,
-            'bio': 'Focused on immigration law related to student visas, work permits, and related legal matters.',
+            'bio': 'Focused on labor rights, workplace safety, and employment law in Bangladeshi industries.',
             'available': False
         },
         {
-            'username': 'lawyer4', 
-            'email': 'lawyer4@legalfirm.com', 
-            'first_name': 'Sarah', 
-            'last_name': 'Martinez',
+            'username': 'nislam',
+            'email': 'nazia.islam@lawfirm.bd',
+            'first_name': 'Nazia',
+            'last_name': 'Islam',
             'password': 'lawyer123',
-            'specialization': 'Employment Law',
-            'experience_years': 7,
-            'bio': 'Assists students with workplace issues including discrimination, harassment, and wage disputes.',
-            'available': True
-        },
-        {
-            'username': 'lawyer5', 
-            'email': 'lawyer5@legalfirm.com', 
-            'first_name': 'David', 
-            'last_name': 'Thompson',
-            'password': 'lawyer123',
-            'specialization': 'Criminal Defense',
+            'specialization': 'Criminal Law',
             'experience_years': 15,
-            'bio': 'Experienced in defending students facing criminal charges and helping them navigate the legal system.',
+            'bio': 'Experienced in criminal defense, representing clients in courts across Bangladesh.',
             'available': True
         },
         {
-            'username': 'lawyer6', 
-            'email': 'lawyer6@legalfirm.com', 
-            'first_name': 'Jessica', 
-            'last_name': 'Garcia',
+            'username': 'tsiddique',
+            'email': 'tanvir.siddique@lawfirm.bd',
+            'first_name': 'Tanvir',
+            'last_name': 'Siddique',
             'password': 'lawyer123',
-            'specialization': 'Intellectual Property',
+            'specialization': 'Property Law',
             'experience_years': 9,
-            'bio': 'Specialized in copyright issues, patent applications, and protecting student innovations and creations.',
+            'bio': 'Helping clients with property disputes, land registration, and real estate transactions.',
+            'available': True
+        },
+        {
+            'username': 'srahman2',
+            'email': 'sabina.rahman@lawfirm.bd',
+            'first_name': 'Sabina',
+            'last_name': 'Rahman',
+            'password': 'lawyer123',
+            'specialization': 'Environmental Law',
+            'experience_years': 7,
+            'bio': 'Advocating for environmental protection and compliance with Bangladesh environmental regulations.',
+            'available': True
+        },
+        {
+            'username': 'hmolla',
+            'email': 'hasan.molla@lawfirm.bd',
+            'first_name': 'Hasan',
+            'last_name': 'Molla',
+            'password': 'lawyer123',
+            'specialization': 'Tax Law',
+            'experience_years': 11,
+            'bio': 'Providing expert advice on tax compliance and dispute resolution for businesses and individuals.',
             'available': False
-        }
+        },
+        {
+            'username': 'rakther',
+            'email': 'rahiha.akther@lawfirm.bd',
+            'first_name': 'Rahiha',
+            'last_name': 'Akther',
+            'password': 'lawyer123',
+            'specialization': 'Human Rights Law',
+            'experience_years': 13,
+            'bio': 'Committed to defending human rights and social justice issues within Bangladesh.',
+            'available': True
+        },
+        {
+            'username': 'ahaque',
+            'email': 'azizul.haque@lawfirm.bd',
+            'first_name': 'Azizul',
+            'last_name': 'Haque',
+            'password': 'lawyer123',
+            'specialization': 'Immigration Law',
+            'experience_years': 10,
+            'bio': 'Specialist in immigration, visas, and work permits for Bangladeshi nationals abroad.',
+            'available': True
+        },
+        {
+            'username': 'mchowdhury',
+            'email': 'mina.chowdhury@lawfirm.bd',
+            'first_name': 'Mina',
+            'last_name': 'Chowdhury',
+            'password': 'lawyer123',
+            'specialization': 'Education Law',
+            'experience_years': 6,
+            'bio': 'Providing legal assistance to educational institutions and students on policy and compliance matters.',
+            'available': False
+        },
     ]
+
     
     lawyer_objects = []
     for data in lawyer_data:
@@ -140,7 +159,7 @@ def create_dummy_data():
     status_options = ['pending', 'accepted', 'rejected']
     
     for _ in range(10):  # Create 10 random hire requests
-        student = random.choice(student_objects)
+        # student = random.choice(student_objects)
         lawyer = random.choice(lawyer_objects)
         message = random.choice(request_messages)
         status = random.choice(status_options)
@@ -150,7 +169,7 @@ def create_dummy_data():
         request_date = timezone.now() - timezone.timedelta(days=days_ago)
         
         hire_request = HireRequest.objects.create(
-            student=student,
+            # student=student,
             lawyer=lawyer,
             message=message,
             status=status,

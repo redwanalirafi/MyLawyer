@@ -1,20 +1,40 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}MyLawyer - Your Legal Guide{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-{% load static %}
-<div class="container-fluid p-0">
-    <div class="position-relative">
-        <img src="{% static 'home.jpg' %}" class="img-fluid w-100" alt="Law library background"
-            style="max-height: 600px; object-fit: cover;">
-        <div class="position-absolute top-50 start-50 translate-middle text-center">
-            <div class="bg-warning px-4 py-2 d-inline-block mb-2">
-                <h1 class="display-4 fw-bold text-dark m-0">MyLawyer</h1>
+<!-- Hero Section with Carousel and Persistent Text Overlay -->
+<div class="position-relative">
+    <!-- Carousel -->
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'carousel1.jpg' %}" class="d-block w-100" style="max-height: 600px; object-fit: cover;" alt="...">
             </div>
-            <p class="text-white fs-5 fw-light">"Your Legal Guide, Anytime, Anywhere!"</p>
+            <div class="carousel-item">
+                <img src="{% static 'carousel2.webp' %}" class="d-block w-100" style="max-height: 600px; object-fit: cover;" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'carousel3.webp' %}" class="d-block w-100" style="max-height: 600px; object-fit: cover;" alt="...">
+            </div>
         </div>
+
+        <!-- Optional: Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+
+    <!-- Persistent Overlay Text -->
+    <div class="position-absolute top-50 start-50 translate-middle text-center z-3">
+        <div class="bg-warning bg-opacity-75 px-4 py-2 rounded mb-2 d-inline-block shadow">
+            <h1 class="display-4 fw-bold text-dark m-0">MyLawyer</h1>
+        </div>
+        <p class="text-white fs-5 fw-light text-shadow">"Your Legal Guide, Anytime, Anywhere!"</p>
     </div>
 </div>
 
@@ -24,19 +44,15 @@
         <div class="col-lg-8 text-center">
             <p class="lead text-secondary">
                 MyLawyer is here to change the way you access legal services. We provide fast, expert legal advice
-                right when you need it, all through a digital platform designed with you in mind. Whether you're
-                looking for answers to a legal question, need help with a contract, or require expert consultation, we
-                make the process simple and stress-free. With MyLawyer, there's no need for expensive consultations
-                or time-consuming appointments. Get professional legal insights with just a few clicks—whenever
-                and wherever you are.
+                right when you need it, all through a digital platform designed with you in mind...
             </p>
-
             <div class="mt-5">
                 <a href="#" class="btn btn-warning btn-lg px-5 py-3 fw-bold">GET STARTED</a>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- Features Section -->
 <div class="container my-5">

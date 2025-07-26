@@ -1,16 +1,31 @@
 {% load static %}
+
 <style>
+    .navbar-custom {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+
+    .nav-link {
+        font-weight: 600;
+        margin-right: 15px;
+        transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: #cf9804 !important;
+    }
+
     .custom-login {
         background-color: #f6cd58;
         color: black;
-        /* font-weight: bold; */
         border: 2px solid #f6cd58;
+        font-weight: 600;
         transition: 0.3s;
     }
 
     .custom-login:hover {
         background-color: #cf9804;
-        color: black;
         border-color: #cf9804;
     }
 
@@ -18,12 +33,12 @@
         background-color: #ffffff;
         color: black;
         border: 2px solid #cf9804;
+        font-weight: 600;
         transition: 0.3s;
     }
 
     .custom-register:hover {
         background-color: #faf7c1;
-        color: black;
         border-color: #ffeb09;
     }
 
@@ -31,12 +46,12 @@
         background-color: #f6cd58;
         color: black;
         border: 2px solid #f6cd58;
+        font-weight: 600;
         transition: 0.3s;
     }
 
     .custom-profile:hover {
         background-color: #cf9804;
-        color: black;
         border-color: #cf9804;
     }
 
@@ -44,6 +59,7 @@
         background-color: transparent;
         color: #dc3545;
         border: 2px solid #dc3545;
+        font-weight: 600;
         transition: 0.3s;
     }
 
@@ -52,42 +68,49 @@
         color: white;
         border-color: #dc3545;
     }
+
+    .navbar-brand img {
+        width: 140px;
+        border-radius: 8px;
+    }
 </style>
 
-<nav class="navbar navbar-expand-lg py-4" style="box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);">
+<nav class="navbar navbar-expand-lg navbar-custom py-4 sticky-top">
     <div class="container-fluid">
-
+        <!-- Logo -->
         <a class="navbar-brand" href="{% url 'home' %}">
-            <img class="col-12" src="{% static 'logo.svg' %}" alt="MyLawyer Logo"
-                style="width: 50%; margin: 0 auto; display: block; border-radius: 5%;">
+            <img src="{% static 'logo.svg' %}" alt="MyLawyer Logo">
         </a>
 
-        <!-- Navbar Toggler for Mobile -->
+        <!-- Navbar Toggler -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
+        <!-- Center Nav Items -->
         <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-            <!-- Center: Navigation Links -->
-            <ul class="navbar-nav">
+            <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'view_lawyers' %}">Hire Lawyer</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About Us</a>
+                    <a class="nav-link" href="{% url 'about' %}">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                    <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'doc_generator' %}">Document Generator</a>
                 </li>
             </ul>
         </div>
 
-        <!-- Right: Login/Register or Profile/Logout based on authentication -->
-        <div class="d-flex">
+        <!-- Right Side: Auth Buttons -->
+        <div class="d-flex align-items-center">
             {% if user.is_authenticated %}
             <a href="{% url 'dashboard' %}" class="btn me-2 custom-profile">
                 <i class="bi bi-person-circle"></i> {{ user.username }}
@@ -95,7 +118,7 @@
             <a href="{% url 'logout' %}" class="btn custom-logout">Logout</a>
             {% else %}
             <a href="{% url 'login' %}" class="btn me-2 custom-login">Login</a>
-            <a href="{% url 'register' %}" class="btn btn-primary custom-register">Register</a>
+            <a href="{% url 'register' %}" class="btn custom-register">Register</a>
             {% endif %}
         </div>
     </div>
